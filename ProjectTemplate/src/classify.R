@@ -1,7 +1,6 @@
 library("ProjectTemplate")
 load.project()
 
-browser()
 model <- rpart(genre ~ ., data = spotifyTraining)
 png("graphs/spotify-genres.png")
 plot(model, margin = 0.05)
