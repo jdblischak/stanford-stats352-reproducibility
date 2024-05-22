@@ -1,0 +1,68 @@
+---
+title: "Classifying musical genre using Spotify audio features"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+This analysis attempts to classify songs into their correct musical genre using
+audio features. It is inspired by the original analysis by Kaylin Pavlik
+([\@kaylinquest][kaylinquest]) in her 2019 blog post [Understanding +
+classifying genres using Spotify audio features][blog-post].
+
+[kaylinquest]: https://twitter.com/kaylinquest
+[blog-post]: https://www.kaylinpavlik.com/classifying-songs-genres/
+
+```{r import}
+spotify <- read.csv("data/raw_data/spotify.csv", stringsAsFactors = FALSE)
+dim(spotify)
+head(spotify)
+table(spotify[, 1])
+spotify <- spotify[, 1:13]
+```
+
+Split the data into training and testing sets. The training set should have 3/4
+of the samples.
+
+```{r split}
+numTrainingSamples <- nrow(spotify) * 3/4
+trainingSet <- sample(seq_len(nrow(spotify)), size = numTrainingSamples)
+spotifyTraining <- spotify[trainingSet, ]
+spotifyTesting <- spotify[-trainingSet, ]
+```
+
+Build classification model with decision tree from the rpart package.
+
+```{r classification}
+library("rpart")
+model <- rpart(genre ~ ., data = spotifyTraining)
+plot(model, margin = 0.05)
+text(model)
+```
+
+Calculate prediction accuracy of the model on the training and testing sets.
+
+```{r accuracy}
+predictTraining <- predict(model, type = "class")
+(accuracyTraining <- mean(spotifyTraining[, 1] == predictTraining))
+
+predictTesting <- predict(model, newdata = spotifyTesting[, -1], type = "class")
+(accuracyTesting <- mean(spotifyTesting[, 1] == predictTesting))
+```
+
+Evaluate prediction performance using a confusion matrix.
+
+```{r confusion-matrix}
+table(predicted = predictTesting, observed = spotifyTesting[, 1])
+```
+
+How does the model compare to random guessing?
+
+```{r random-guess}
+predictRandom <- sample(unique(spotifyTesting[, 1]),
+                        size = nrow(spotifyTesting),
+                        replace = TRUE,
+                        prob = table(spotifyTesting[, 1]))
+(accuracyRandom <- mean(spotifyTesting[, 1] == predictRandom))
+```

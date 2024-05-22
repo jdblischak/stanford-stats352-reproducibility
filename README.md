@@ -13,3 +13,5 @@ demonstrate common reproducibility problems.
 * `workflowr/` - the Spotify analysis converted to a workflowr project
 
 * `ProjectTemplate/` the Spotify analysis converted to a ProjectTemplate project
+
+* `rrtools/` - the Spotify analysis converted to an rrtools project

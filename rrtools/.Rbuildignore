@@ -1,0 +1,5 @@
+^rrtools\.Rproj$
+^\.Rproj\.user$
+analysis
+^Dockerfile$
+^render-in-docker\.yaml$
