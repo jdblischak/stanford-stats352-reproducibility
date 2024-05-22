@@ -10,4 +10,6 @@ features](https://www.kaylinpavlik.com/classifying-songs-genres/) written by
 [kaylin Pavlik](https://www.kaylinpavlik.com). I purposefully added errors to
 demonstrate common reproducibility problems.
 
-* `workflowr/` - the spotify analysis converted to a workflowr project
+* `workflowr/` - the Spotify analysis converted to a workflowr project
+
+* `ProjectTemplate/` the Spotify analysis converted to a ProjectTemplate project
